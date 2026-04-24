@@ -46,7 +46,7 @@ async def upload_csv(file: UploadFile = File(...)) -> UploadResponse:
     save_dataframe(df)
 
     # ── Build preview (first 5 rows, NaN → None for JSON serialisation) ───────
-    preview = df.head(5).where(pd.notnull(df.head(5)), other=None).to_dict(orient="records")
+    preview = df.head(50).where(pd.notnull(df.head(50)), other=None).to_dict(orient="records")
 
     return UploadResponse(
         columns=list(df.columns),

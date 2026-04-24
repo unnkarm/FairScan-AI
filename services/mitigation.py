@@ -33,6 +33,15 @@ def oversample_minority(
     # We compare raw counts (not rates) to decide who to oversample.
     target = df[target_column]
 
+    # Binarize if not already binary
+    unique_vals = target.dropna().unique()
+    if not set(map(str, unique_vals)).issubset({"0", "1", "True", "False", "true", "false"}):
+        if len(unique_vals) != 2:
+            median_val = target.median()
+            target = (target >= median_val).astype(int)
+        else:
+            sorted_vals = sorted(unique_vals, key=str)
+            target = target.map({sorted_vals[0]: 0, sorted_vals[1]: 1})
     priv_positive = df[(sensitive == str(privileged_value)) & (target == 1)]
     unpriv_positive = df[(sensitive == str(unprivileged_value)) & (target == 1)]
 

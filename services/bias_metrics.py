@@ -35,14 +35,13 @@ def compute_metrics(
             {"1": 1, "true": 1, "0": 0, "false": 0}
         )
     else:
-        # Treat the majority value as 1 (positive outcome) only if exactly 2 classes
         if len(unique_vals) != 2:
-            raise ValueError(
-                f"Target column '{target_column}' must be binary "
-                f"(2 unique values). Found: {list(unique_vals)}"
-            )
-        sorted_vals = sorted(unique_vals, key=str)
-        target = target.map({sorted_vals[0]: 0, sorted_vals[1]: 1})
+            # Auto-binarize continuous columns using median threshold
+            median_val = target.median()
+            target = (target >= median_val).astype(int)
+        else:
+            sorted_vals = sorted(unique_vals, key=str)
+            target = target.map({sorted_vals[0]: 0, sorted_vals[1]: 1})
 
     # Cast sensitive column to string for reliable comparison
     sensitive = df[sensitive_column].astype(str)
