@@ -2,6 +2,8 @@
 
 **Bias Audit & Fix Tool** — Upload a CSV dataset, measure algorithmic bias (Disparate Impact Ratio + Statistical Parity Difference), get AI-powered explanations via Gemini, and apply bias mitigation — all through a polished React frontend backed by a FastAPI + ML model.
 
+**Check here:** [fair-scan-ai](https://fair-scan-ai-h1t7.vercel.app/)
+
 ---
 
 ## Project Structure
